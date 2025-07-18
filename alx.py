@@ -18,7 +18,6 @@ ppg_valleys,  _ = find_peaks(-ppg,distance=min_dist)
 abp_peaks,    _ = find_peaks(abp,distance=min_dist)
 abp_valley,   _ = find_peaks(-abp,distance=min_dist)
 
-
 dicrotic_notches = []
 min_dist = int(0.4 * fs)
 
@@ -84,10 +83,14 @@ mean_dn = np.mean(ppg_dn_amps)
 absolute_amplitude = mean_peak - mean_trough
 absolute_amplitude2 = mean_dn - mean_trough
 
-print(f"Mean peak amplitude:   {mean_peak:.4f}")
-print(f"Mean trough amplitude: {mean_trough:.4f}")
+#print(f"Mean peak amplitude:   {mean_peak:.4f}")
+#print(f"Mean trough amplitude: {mean_trough:.4f}")
 print(f"Absolute amplitude:    {absolute_amplitude:.4f}")
 print(f"Absolute amplitude 2:    {absolute_amplitude2:.4f}")
+alx = (absolute_amplitude-absolute_amplitude2)/absolute_amplitude
+print("ALX = ",alx)
+print(data['SBP'])
+print(data['DBP'])
 
 
 # — Plot PPG with its notches —

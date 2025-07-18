@@ -56,15 +56,22 @@ class FinalPredictor(nn.Module):
     def __init__(self):
         super(FinalPredictor, self).__init__()
         self.net = nn.Sequential(
-            nn.Linear(64 + 32, 64),
+            nn.Linear(64 + 32, 128),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+
+            nn.Linear(128, 64),
             nn.BatchNorm1d(64),
             nn.ReLU(),
-            nn.Linear(64, 2)  # SBP, DBP
+
+            nn.Linear(64, 2) # SBP, DBP
         )
 
     def forward(self, diff, calib_feat):
         x = torch.cat([diff, calib_feat], dim=1)
-        return torch.relu(self.net(x))  # ensures BP ≥ 0
+        x = self.net(x)
+        x = torch.sigmoid(x)  # ensures output ∈ [0, 1]
+        return x 
 
 
 

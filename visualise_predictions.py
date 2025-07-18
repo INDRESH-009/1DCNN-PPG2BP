@@ -22,6 +22,9 @@ model.eval()
 # 4. Predict
 with torch.no_grad():
     y_pred = model(X_target, X_calib).numpy()
+print("Predicted SBP range:", y_pred[:, 0].min(), y_pred[:, 0].max())
+print("Predicted DBP range:", y_pred[:, 1].min(), y_pred[:, 1].max())
+
 
 # 5. Denormalize predictions and ground truth
 y_pred = y_pred * (y_max - y_min) + y_min
@@ -37,7 +40,8 @@ plt.xlabel("Sample")
 plt.ylabel("SBP (mmHg)")
 plt.grid(True)
 plt.tight_layout()
-plt.show()
+plt.show(block=False)
+plt.pause(10)
 
 # 7. Plot DBP
 plt.figure(figsize=(10, 4))
@@ -49,8 +53,8 @@ plt.xlabel("Sample")
 plt.ylabel("DBP (mmHg)")
 plt.grid(True)
 plt.tight_layout()
-plt.show()
-
+plt.show(block =False)
+plt.pause(10)
 # 8. Evaluate with MAE
 mae_sbp = mean_absolute_error(y_true[:, 0], y_pred[:, 0])
 mae_dbp = mean_absolute_error(y_true[:, 1], y_pred[:, 1])
